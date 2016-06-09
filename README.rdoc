@@ -167,11 +167,6 @@ As is conventional, a "Disallow: " line with no path given is treated as
 "Allow: *", and if a URL didn't match any path specifiers (or the user-agent
 didn't match any user-agent sections) then that is implicit permission to crawl.
 
-== TODO
-
-I would like to add support for the Crawl-delay directive, and indeed any other
-parameters in use.
-
 == Requirements
 
 * Ruby >= 1.8.7
@@ -179,16 +174,12 @@ parameters in use.
 
 == Installation
 
-This library is intended to be installed via the
-RubyGems[http://rubyforge.org/projects/rubygems/] system.
-
-  $ gem install robotstxt
-
-You might need administrator privileges on your system to install it.
+  gem 'robotstxt-parser', github: 'hbda/robotstxt-parser', require: 'robotstxt'
 
 == Author
 
-Author:: {Conrad Irwin} <conrad@rapportive.com>
+Author:: Dmitry Borisov <scorpion061181@gmail.com>
+Author:: Conrad Irwin <conrad@rapportive.com>
 Author:: {Simone Rinzivillo}[http://www.simonerinzivillo.it/] <srinzivillo@gmail.com>
 
 == License
@@ -196,4 +187,3 @@ Author:: {Simone Rinzivillo}[http://www.simonerinzivillo.it/] <srinzivillo@gmail
 Robotstxt is released under the MIT license.
 Copyright (c) 2010 Conrad Irwin
 Copyright (c) 2009 Simone Rinzivillo
-
