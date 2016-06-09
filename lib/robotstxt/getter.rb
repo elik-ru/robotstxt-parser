@@ -1,6 +1,8 @@
+require 'robotstxt/common_methods'
+
 module Robotstxt
   class Getter
-    include CommonMethods
+    include Robotstxt::CommonMethods
 
     # Get the text of a robots.txt file from the given source, see #get.
     def obtain(source, robot_id, options)

@@ -1,4 +1,3 @@
-
 module Robotstxt
   # Parses robots.txt files for the perusal of a single user-agent.
   #
@@ -220,12 +219,12 @@ module Robotstxt
       @rules = []
       @sitemaps = []
       @delays = {}
+      current_agent = ''
 
       body.split(/[\r\n]+/).each do |line|
         prefix, value = line.delete("\000").split(":", 2).map(&:strip)
         value.sub! /\s+#.*/, '' if value
         parser_mode = :begin
-        current_agent = ''
 
         if prefix && value
 
@@ -257,7 +256,7 @@ module Robotstxt
             when "sitemap"
               @sitemaps << value
             when 'crawl-delay'
-              @delays[current_agent] = value
+              @delays[current_agent] = value.to_f.round
             else
               # Ignore comments, Crawl-delay: and badly formed lines.
           end

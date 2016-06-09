@@ -13,7 +13,7 @@
 #
 #++
 
-require 'robotstxt/common'
+require 'robotstxt/common_methods'
 require 'robotstxt/parser'
 require 'robotstxt/getter'
 
