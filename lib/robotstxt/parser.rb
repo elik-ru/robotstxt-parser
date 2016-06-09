@@ -69,7 +69,11 @@ module Robotstxt
 
     end
 
-    protected
+    def crawl_delay
+      @delays[@robot_id]
+    end
+
+  protected
 
     # Check whether the relative path (a string of the url's path and query
     # string) is allowed by the rules we have for the given user_agent.
@@ -215,16 +219,19 @@ module Robotstxt
       @body = Robotstxt.ultimate_scrubber(body)
       @rules = []
       @sitemaps = []
+      @delays = {}
 
       body.split(/[\r\n]+/).each do |line|
         prefix, value = line.delete("\000").split(":", 2).map(&:strip)
         value.sub! /\s+#.*/, '' if value
         parser_mode = :begin
+        current_agent = ''
 
         if prefix && value
 
           case prefix.downcase
             when /^user-?agent$/
+              current_agent = value
               if parser_mode == :user_agent
                 @rules << [value, rules.last[1]]
               else
@@ -233,7 +240,10 @@ module Robotstxt
               end
             when "disallow"
               parser_mode = :rules
-              @rules << ["*", []] if @rules.empty?
+              if @rules.empty?
+                @rules << ["*", []]
+                current_agent = '*'
+              end
 
               if value == ""
                 @rules.last[1] << ["*", true]
@@ -246,6 +256,8 @@ module Robotstxt
               @rules.last[1] << [value, true]
             when "sitemap"
               @sitemaps << value
+            when 'crawl-delay'
+              @delays[current_agent] = value
             else
               # Ignore comments, Crawl-delay: and badly formed lines.
           end
