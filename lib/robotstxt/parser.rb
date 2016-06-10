@@ -40,6 +40,8 @@ module Robotstxt
   class Parser
     include Robotstxt::CommonMethods
 
+    DEFAULT_AGENT = '*'
+
     # Gets every Sitemap mentioned in the body of the robots.txt file.
     #
     attr_reader :sitemaps
@@ -69,7 +71,7 @@ module Robotstxt
     end
 
     def crawl_delay
-      @delays[@robot_id]
+      @delays[@robot_id] || @delays[DEFAULT_AGENT]
     end
 
   protected
@@ -237,28 +239,28 @@ module Robotstxt
                 parser_mode = :user_agent
                 @rules << [value, []]
               end
-            when "disallow"
+            when 'disallow'
               parser_mode = :rules
               if @rules.empty?
-                @rules << ["*", []]
-                current_agent = '*'
+                current_agent = DEFAULT_AGENT
+                @rules << [current_agent, []]
               end
 
-              if value == ""
-                @rules.last[1] << ["*", true]
+              if value == ''
+                @rules.last[1] << ['*', true]
               else
                 @rules.last[1] << [value, false]
               end
-            when "allow"
+            when 'allow'
               parser_mode = :rules
               @rules << ["*", []] if @rules.empty?
               @rules.last[1] << [value, true]
-            when "sitemap"
+            when 'sitemap'
               @sitemaps << value
             when 'crawl-delay'
               @delays[current_agent] = value.to_f.round
             else
-              # Ignore comments, Crawl-delay: and badly formed lines.
+              # Ignore comments and badly formed lines.
           end
         end
       end
