@@ -171,7 +171,7 @@ module Robotstxt
         "%25#{code.upcase}"
       end
 
-      URI.unescape(path)
+      CGI.unescape(path)
 
     end
 
