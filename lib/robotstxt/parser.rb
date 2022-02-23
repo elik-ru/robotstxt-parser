@@ -264,6 +264,7 @@ module Robotstxt
           end
         end
       end
+      @rules = @rules.group_by(&:first).transform_values{|v| v.map(&:last).reduce(&:+).uniq}.to_a
     end
   end
 end
